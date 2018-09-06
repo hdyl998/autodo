@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnOpen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="去打开辅助功能" />
+
+
+    <Button
+        android:id="@+id/startCapture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="开始截屏" />
+
+    <Button
+        android:id="@+id/stopCapture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="停止截屏" />
+
+    <Button
+        android:id="@+id/choosePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="二维码识别" />
+
+    <Button
+        android:id="@+id/clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清屏" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/button1" />
-</RelativeLayout>
+</LinearLayout>

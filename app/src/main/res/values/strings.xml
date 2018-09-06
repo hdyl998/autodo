@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">FragmentAdd</string>
+    <string name="app_name">AutoDoCP</string>
+
+    <string name="description">AutoDoCP是一个自动化下单的程序,自动操作,自动脚本,自动...你想要的都可以</string>
 </resources>
