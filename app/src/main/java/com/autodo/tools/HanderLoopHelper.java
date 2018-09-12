@@ -11,7 +11,7 @@ import android.os.Message;
 
 public class HanderLoopHelper {
 
-    private int loopTime = 1000;//循环时间1秒
+    private int loopTime = 2000;//循环时间2秒
 
     private boolean isStarted = false;//是否启动过
 

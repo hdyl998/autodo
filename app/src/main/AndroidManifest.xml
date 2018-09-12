@@ -19,6 +19,9 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <!--屏幕常亮-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name="com.autodo.App"

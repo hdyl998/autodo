@@ -1,4 +1,4 @@
-package com.autodo;
+package com.autodo.utils;
 
 import android.accessibilityservice.AccessibilityService;
 import android.app.Activity;
@@ -10,10 +10,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
+import com.autodo.App;
 import com.autodo.tools.LogUtils;
 
 import java.io.File;
@@ -65,10 +67,10 @@ public class Tools {
         List<AccessibilityNodeInfo> lists = root.findAccessibilityNodeInfosByViewId(string);
 
         if (isListEmpty(lists)) {
-            LogUtils.d("findFirstById", "查找为空id" + string);
+            LogUtils.d("findFirstById", "查找为空id " + string);
             return null;
         }
-        LogUtils.d("findFirstById", "查找成功id" + string);
+        LogUtils.d("findFirstById", "查找成功id " + string);
         return lists.get(0);
 
     }
@@ -107,11 +109,7 @@ public class Tools {
      * @param millis
      */
     public static void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        SystemClock.sleep(millis);
     }
 
 
@@ -210,7 +208,7 @@ public class Tools {
      */
     public static void saveBitmapAsFile(Context mContext, Bitmap bitmap) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("截图第一次失败yyyy_MM_dd_hh_mm_ss");
             String strDate = dateFormat.format(new java.util.Date());
             String pathImage = Environment.getExternalStorageDirectory().getPath() + "/Pictures/";
             String nameImage = pathImage + strDate + ".png";
@@ -244,6 +242,7 @@ public class Tools {
             Log.i(TAG, "showDialog:" + info.canOpenPopup());
             Log.i(TAG, "Text：" + info.getText());
             Log.i(TAG, "windowId:" + info.getWindowId());
+            Log.i(TAG, "resId:" + info.getViewIdResourceName());
         } else {
             for (int i = 0; i < info.getChildCount(); i++) {
                 if (info.getChild(i) != null) {
@@ -251,5 +250,45 @@ public class Tools {
                 }
             }
         }
+    }
+
+    public static AccessibilityNodeInfo recycleFindNodeInfoById(AccessibilityNodeInfo info, String id) {
+        AccessibilityNodeInfo infoResult = null;
+        if (info.getChildCount() == 0) {
+            if (id.equals(info.getViewIdResourceName())) {
+                return info;
+            }
+        } else {
+            int count = info.getChildCount();
+            for (int i = 0; i < count; i++) {
+                if (info.getChild(i) != null) {
+                    infoResult = recycleFindNodeInfoById(info.getChild(i), id);
+                    if (infoResult != null) {
+                        return infoResult;
+                    }
+                }
+            }
+        }
+        return infoResult;
+    }
+
+    public static AccessibilityNodeInfo recycleFindNodeInfoByText(AccessibilityNodeInfo info, String text) {
+        AccessibilityNodeInfo infoResult = null;
+        if (info.getChildCount() == 0) {
+            if (text.equals(info.getText().toString())) {
+                return info;
+            }
+        } else {
+            int count = info.getChildCount();
+            for (int i = 0; i < count; i++) {
+                if (info.getChild(i) != null) {
+                    infoResult = recycleFindNodeInfoByText(info.getChild(i), text);
+                    if (infoResult != null) {
+                        return infoResult;
+                    }
+                }
+            }
+        }
+        return infoResult;
     }
 }

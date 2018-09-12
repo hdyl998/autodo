@@ -32,7 +32,11 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
-
-    /*添加依赖*/
+    //socket
+    implementation('io.socket:socket.io-client:1.0.0') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
+    /*二维码识别*/
     implementation 'com.github.yuzhiqiang1993:zxing:2.1.8'
 }

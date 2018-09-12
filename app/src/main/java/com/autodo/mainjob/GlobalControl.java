@@ -1,6 +1,6 @@
 package com.autodo.mainjob;
 
-import com.autodo.logic.GroupSelectItem;
+import com.autodo.lottery.OrderItem;
 
 /**
  * <p>Created by liugd on 2018/4/4.<p>
@@ -25,10 +25,10 @@ public class GlobalControl {
         isStart = start;
     }
 
-    private GroupSelectItem groupItem;
+    private OrderItem groupItem;
 
 
-    public GroupSelectItem getGroupItem() {
+    public OrderItem getGroupItem() {
         return groupItem;
     }
 }

@@ -3,7 +3,7 @@ package com.autodo.mainjob;
 import android.accessibilityservice.AccessibilityService;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import com.autodo.Tools;
+import com.autodo.utils.Tools;
 
 /**
  * <p>Created by liugd on 2018/4/4.<p>

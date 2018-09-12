@@ -1,4 +1,4 @@
-package com.autodo;
+package com.autodo.config;
 
 /**
  * <p>Created by liugd on 2018/4/4.<p>

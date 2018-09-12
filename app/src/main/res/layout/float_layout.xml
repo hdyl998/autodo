@@ -2,11 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:text="截图" />
+
+    <Button
+        android:id="@+id/btnStopResume"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="继续" />
+
 </LinearLayout>

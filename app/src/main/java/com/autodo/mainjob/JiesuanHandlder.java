@@ -3,8 +3,8 @@ package com.autodo.mainjob;
 import android.accessibilityservice.AccessibilityService;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import com.autodo.Tools;
-import com.autodo.logic.GroupSelectItem;
+import com.autodo.utils.Tools;
+import com.autodo.lottery.OrderItem;
 import com.autodo.tools.LogUtils;
 
 import java.util.HashMap;
@@ -36,14 +36,14 @@ public class JiesuanHandlder extends BaseHandler {
 
     @Override
     public boolean handle() {
-        GroupSelectItem item = GlobalControl.getInstance().getGroupItem();
+        OrderItem item = GlobalControl.getInstance().getGroupItem();
 
         //过关方式多种
         if (item.listPassway.size() > 1) {
             AccessibilityNodeInfo chuanNodeInfo = findFirstById("com.jjc:id/gc_gg_title_tv");
             Tools.doClick(chuanNodeInfo);
 
-            String currentSelectId = hashMapIds.get(item.selectItemList.size());
+            String currentSelectId = hashMapIds.get(item.selectItems.size());
             AccessibilityNodeInfo node = findFirstById(currentSelectId);
             Tools.doClick(node);
             Tools.sleep(100);

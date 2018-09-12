@@ -3,7 +3,7 @@ package com.autodo.mainjob;
 import android.accessibilityservice.AccessibilityService;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import com.autodo.Tools;
+import com.autodo.utils.Tools;
 
 /**
  * 主界面的处理
@@ -18,6 +18,7 @@ public class MainActivityHandler extends BaseHandler {
 
     @Override
     public boolean handle() {
+        Tools.sleep(1000);
         AccessibilityNodeInfo nodeInfo = findFirstByText("竞彩足球");
         if (nodeInfo != null) {
             Tools.doClick(nodeInfo);

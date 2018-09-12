@@ -5,36 +5,53 @@
     android:orientation="vertical">
 
 
-    <Button
-        android:id="@+id/btnOpen"
+    <com.autodo.view.FlowLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="去打开辅助功能" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnOpen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="去打开辅助功能" />
+
+        <Button
+            android:id="@+id/startCaptureService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开启截屏服务" />
+
+        <Button
+            android:id="@+id/startCapture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="立即截屏" />
+
+        <Button
+            android:id="@+id/stopCapture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="停止截屏" />
+
+        <Button
+            android:id="@+id/choosePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="二维码识别" />
+
+        <Button
+            android:id="@+id/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清屏" />
+
+    </com.autodo.view.FlowLayout>
 
 
-    <Button
-        android:id="@+id/startCapture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="开始截屏" />
-
-    <Button
-        android:id="@+id/stopCapture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="停止截屏" />
-
-    <Button
-        android:id="@+id/choosePicture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="二维码识别" />
-
-    <Button
-        android:id="@+id/clear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="清屏" />
+    <TextView
+        android:id="@+id/tvSocketStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <ListView
         android:id="@+id/listView"

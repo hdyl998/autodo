@@ -1,4 +1,4 @@
-package com.autodo;
+package com.autodo.notimportant;
 
 import android.accessibilityservice.AccessibilityService;
 import android.view.accessibility.AccessibilityEvent;

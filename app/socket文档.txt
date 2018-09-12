@@ -1,0 +1,29 @@
+1. ws连接地址:
+    本地：112.74.180.32:8090
+
+2. 客户端监听"data"事件获取订单信息:
+
+    socket.on("data",function(message){
+    });
+
+    message：
+        类型：json字符串
+
+        内容：{"pid":"方案id"(string),"money":"金额"(string),"fileorcode":"投注内容"(string),"beishu":倍数(int),"playid":玩法id(int)}
+
+3. 客户端处理订单后，发送数据到"handle"事件:
+
+    socket.emit('handle',message);
+
+    message:
+        类型：json字符串
+        内容：{"code":状态码(int),"message":"状态码说明","data":{"pid":"方案id","codeStr":"二维码字符串"}}
+
+ 4. 客户端监听"handleReply"事件获取服务端订单状态更新信息:
+    socket.on("data",function(message){
+    });
+
+    message:
+        类型：json字符串
+        内容：{"code":状态码(int),"message":"状态码说明","data":{"pid":"方案id"}}
+        

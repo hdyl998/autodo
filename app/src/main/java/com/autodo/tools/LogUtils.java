@@ -16,14 +16,18 @@ public class LogUtils {
     public static void d(String d) {
         if (isOutputLog) {
             Log.e("ttt", d);
-            MainActivity.listStrings.add(d);
         }
     }
 
     public static void d(String tag, String d) {
         if (isOutputLog) {
             Log.e(tag, d);
-            MainActivity.listStrings.add(tag + ":" + d);
+        }
+    }
+
+    public static void print(String log_tag, String s) {
+        if (isOutputLog) {
+            Log.e(log_tag, s);
         }
     }
 }

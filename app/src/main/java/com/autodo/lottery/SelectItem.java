@@ -1,16 +1,17 @@
-package com.autodo.logic;
+package com.autodo.lottery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 一场比赛
  * <p>Created by liugd on 2018/4/4.<p>
  * <p>佛祖保佑，永无BUG<p>
  */
 
 public class SelectItem {
-    public String orderId;
+    public String orderNum;
     public List<Integer> seletions = new ArrayList<>();
 
 
@@ -28,26 +29,34 @@ public class SelectItem {
         return true;
     }
 
-    //test
-    {
-        orderId = "周三001";
-        seletions.add(12);
-        seletions.add(22);
-        seletions.add(23);
-        seletions.add(24);
-    }
+//    //test
+//    {
+//        orderNum = "周三001";
+//        seletions.add(12);
+//        seletions.add(22);
+//        seletions.add(23);
+//        seletions.add(24);
+//    }
 
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("orderId: ");
-        builder.append(orderId);
+        StringBuilder builder = new StringBuilder("orderNum: ");
+        builder.append(orderNum);
         builder.append(" seletions: ");
         for (Integer integer : seletions) {
             builder.append(supportSelections.get(integer));
             builder.append(" ");
         }
         return builder.substring(0);
+    }
+
+    /***
+     * 合并选项
+     * @param item
+     */
+    public void merginSelections(SelectItem item) {
+        seletions.addAll(item.seletions);
     }
 
 

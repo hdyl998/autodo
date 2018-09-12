@@ -1,4 +1,4 @@
-package com.autodo;
+package com.autodo.notimportant;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import com.autodo.config.Config;
 import com.autodo.tools.LogUtils;
 
 import java.util.ArrayList;

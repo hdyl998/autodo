@@ -1,13 +1,20 @@
 package com.autodo.logic;
 
-import android.accessibilityservice.AccessibilityService;
 import android.graphics.Rect;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import com.autodo.AccessibilityCPService;
 import com.autodo.App;
+import com.autodo.StatusCode;
 import com.autodo.capture.CaptureScreenService;
+import com.autodo.lottery.ConstDatas;
+import com.autodo.lottery.MyOrders;
+import com.autodo.lottery.OrderItem;
+import com.autodo.lottery.SelectItem;
+import com.autodo.mainjob.exception.CodeErrorException;
+import com.autodo.mainjob.exception.TimeOutException;
 import com.autodo.tools.LogUtils;
-import com.autodo.Tools;
+import com.autodo.utils.Tools;
 
 import java.util.HashMap;
 
@@ -40,10 +47,10 @@ public class LogicHolder {
             "com.jjc:id/jz_rqspf_win_ll", "com.jjc:id/jz_rqspf_ping_ll", "com.jjc:id/jz_rqspf_fu_ll"
     };
 
-    AccessibilityService service;
+    AccessibilityCPService service;
 
 
-    public LogicHolder(AccessibilityService service) {
+    public LogicHolder(AccessibilityCPService service) {
         this.service = service;
     }
 
@@ -127,15 +134,19 @@ public class LogicHolder {
      * 去结算界面
      */
     public void nextJiesuanPage() {
-        //确保在混合过关内
+        int totalTime = 0;
         while (!isInHunheguoguan()) {
-            Tools.sleep(100);
+            Tools.sleep(1000);
+            totalTime += 1000;
+            if (totalTime >= ConstDatas.PAGE_TIME_OUT) {
+                throw new TimeOutException("nextJiesuanPage");
+            }
         }
         //确保在混合过关内
         AccessibilityNodeInfo submit = Tools.findFirstById(service.getRootInActiveWindow(), "com.jjc:id/btn_submit");
         Tools.doClick(submit);
         Tools.showToast("点击下一步");
-        Tools.sleep(900);
+        Tools.sleep(1000);
     }
 
     /**
@@ -150,22 +161,30 @@ public class LogicHolder {
 
 
     public void ensureHunheguoguan() {
+
+
+        int totalTime = 0;
         //确保在混合过关内
         while (!isInHunheguoguan()) {
-            Tools.sleep(100);
+            Tools.sleep(1000);
+
+            totalTime += 1000;
+            if (totalTime >= ConstDatas.PAGE_TIME_OUT) {
+                throw new TimeOutException("ensureHunheguoguan");
+            }
         }
-        AccessibilityNodeInfo nodeInfo = Tools.findFirstByText(service.getRootInActiveWindow(), "混合过关");
-        if (nodeInfo != null) {
-            LogUtils.d(nodeInfo.toString());
-            Tools.doClick(nodeInfo);
-            Tools.sleep(50);
-            Tools.printRecycle(service.getRootInActiveWindow());
-            return;
-        }
-        nodeInfo = Tools.findFirstById(service.getRootInActiveWindow(), "cn.gov.lottery:id/ll_top_title");
-        Tools.doClick(nodeInfo);
-        Tools.sleep(50);
-        Tools.printRecycle(nodeInfo);
+//        AccessibilityNodeInfo nodeInfo = Tools.findFirstByText(service.getRootInActiveWindow(), "混合过关");
+//        if (nodeInfo != null) {
+//            LogUtils.d(nodeInfo.toString());
+//            Tools.doClick(nodeInfo);
+//            Tools.sleep(50);
+//            Tools.printRecycle(service.getRootInActiveWindow());
+//            return;
+//        }
+//        nodeInfo = Tools.findFirstById(service.getRootInActiveWindow(), "cn.gov.lottery:id/ll_top_title");
+//        Tools.doClick(nodeInfo);
+//        Tools.sleep(50);
+//        Tools.printRecycle(nodeInfo);
     }
 
 
@@ -175,18 +194,26 @@ public class LogicHolder {
      */
     public boolean selectSelections(SelectItem selectItem) {
         //确保在混合过关内
+        int totalTime = 0;
+
         while (!isInHunheguoguan()) {
-            Tools.sleep(100);
+            Tools.sleep(1000);
+
+            totalTime += 1000;
+            if (totalTime >= ConstDatas.PAGE_TIME_OUT) {
+                throw new TimeOutException("selectSelections");
+            }
         }
         //判定场景,在混合过关界面
         //查找listView
         AccessibilityNodeInfo listView = Tools.findFirstById(service.getRootInActiveWindow(), "com.jjc:id/elv_sport_expand");
         if (listView != null) {
-            AccessibilityNodeInfo itemNodeInfo = findNodeInfoByOrderId(listView, selectItem.orderId);
+            AccessibilityNodeInfo itemNodeInfo = findNodeInfoByOrderId(listView, selectItem.orderNum);
             if (itemNodeInfo == null) {
-                Tools.showToast("没有找到" + selectItem.orderId);
-                LogUtils.d(TAG, "没有找到" + selectItem.orderId);
-                return false;
+                String string = "没有找到" + selectItem.orderNum;
+                Tools.showToast(string);
+                LogUtils.d(TAG, string);
+                throw new CodeErrorException(StatusCode.ERROR_NOT_FIND_MATCH, string);
             }
             //全是胜平负或让球胜平负
             if (selectItem.isAllSpfRqSpf()) {
@@ -209,7 +236,7 @@ public class LogicHolder {
         int time = 50;
         while (time > 0) {
             listView.performAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
-            Tools.sleep(100);
+            Tools.sleep(300);
             time--;
             AccessibilityNodeInfo nodeInfo = Tools.findFirstById(listView, "com.jjc:id/tv_game_no");
             String textOrderId = nodeInfo.getText().toString();
@@ -248,7 +275,6 @@ public class LogicHolder {
                 AccessibilityNodeInfo parent = newNodeInfo.getParent();
                 return parent;//listView一条的根view
             }
-
             //取第一个竞彩编号,看是否需要向下滑动,向上滑动
             nodeInfo = Tools.findFirstById(listView, "com.jjc:id/tv_game_no");
             String textOrderId = nodeInfo.getText().toString();
@@ -293,11 +319,14 @@ public class LogicHolder {
      * 设置倍数,选中几串几
      * @param item
      */
-    public void setPassWayInfo(GroupSelectItem item) {
-
-        //确保在混合过关内
+    public void setPassWayInfo(OrderItem item) {
+        int totalTime = 0;
         while (!isInJesuan()) {
-            Tools.sleep(200);
+            Tools.sleep(1000);
+            totalTime += 1000;
+            if (totalTime >= ConstDatas.PAGE_TIME_OUT) {
+                throw new TimeOutException("isInJesuan");
+            }
         }
         AccessibilityNodeInfo rootNodeInfo = service.getRootInActiveWindow();
 
@@ -306,7 +335,7 @@ public class LogicHolder {
             AccessibilityNodeInfo chuanNodeInfo = Tools.findFirstById(rootNodeInfo, "com.jjc:id/gc_gg_title_tv");
             Tools.doClick(chuanNodeInfo);
 
-            String currentSelectId = hashMapIds.get(item.selectItemList.size());
+            String currentSelectId = hashMapIds.get(item.selectItems.size());
             AccessibilityNodeInfo node = Tools.findFirstById(rootNodeInfo, currentSelectId);
             Tools.doClick(node);
             Tools.sleep(100);
@@ -317,7 +346,9 @@ public class LogicHolder {
                     Tools.doClick(id1);
                     Tools.sleep(100);
                 } else {
-                    LogUtils.d(TAG, "id 不存在 index=" + index);
+                    String msg = "id 不存在 index=" + index;
+                    LogUtils.d(TAG, msg);
+                    throw new CodeErrorException(StatusCode.ERROR_PASSWAY_NOT_EXIST, msg);
                 }
             }
         }
@@ -360,9 +391,17 @@ public class LogicHolder {
         }
     }
 
+    /***
+     * 截图界面
+     */
     public void checkQrCodeSence() {
+        int totalTime = 0;
         while (!isInQrCodeSence()) {
             Tools.sleep(1000);
+            totalTime += 1000;
+            if (totalTime >= ConstDatas.PAGE_TIME_OUT) {
+                throw new TimeOutException("checkQrCodeSence");
+            }
         }
         doQrCodeSence();
     }
@@ -370,20 +409,6 @@ public class LogicHolder {
 
     public boolean isInQrCodeSence() {
         return Tools.isInSceneById(service, "com.other:id/money_num");
-    }
-
-    public boolean isInDialogSence() {
-        return Tools.isInSceneById(service, "cn.gov.lottery:id/tv_dialog_title");
-    }
-
-    /***
-     * 检查是否在温馨提示对话框中
-     */
-    public void checkDialogSence() {
-        if (isInDialogSence()) {
-            AccessibilityNodeInfo ok = Tools.findFirstById(service.getRootInActiveWindow(), "cn.gov.lottery:id/tv_confirm");
-            Tools.doClick(ok);
-        }
     }
 
 
@@ -411,11 +436,19 @@ public class LogicHolder {
         int bei = Integer.parseInt(strInfo.substring(indexZhu + 1, indexBei));
 
         LogUtils.d(TAG, "zhang" + zhang);
-
         LogUtils.d(TAG, "zhu" + zhu);
-
         LogUtils.d(TAG, "bei" + bei);
 
+        OrderItem item = MyOrders.getFirstOrderItem();
+        if (item == null || !item.checkOrderInfoRight(money, bei)) {
+            if (item != null) {
+                MyOrders.endHandleOrderItem(item, StatusCode.ERROR_NOT_ZHUSHU_MONEY_BEI);
+                LogUtils.d(TAG, "注数或钱数或倍数错误");
+            }
+            Tools.doClick(root.getChild(0));
+            Tools.sleep(1000);
+            return;
+        }
 
         AccessibilityNodeInfo picNode = Tools.findFirstById(root, "com.other:id/qrCode");
         //获得在屏幕上的位置
@@ -429,29 +462,55 @@ public class LogicHolder {
         rect.bottom += 5;
         //执行截屏
         CaptureScreenService.doCapture(App.getApp(), rect);
+        //等待截图完成
+        new Thread() {
+            int waitingMaxTime = 10000;
 
-        Tools.doClick(Tools.findFirstById(root, "cn.gov.lottery:id/ll_title_back"));
-        Tools.sleep(1000);
+            @Override
+            public void run() {
+                while (!CaptureScreenService.isOK) {
+                    Tools.sleep(500);
+                    waitingMaxTime -= 500;
+                    if (waitingMaxTime <= 0) {//超时
+                        break;
+                    }
+                }
+                OrderItem item = MyOrders.getFirstOrderItem();
+                if (item != null) {
+                    int statusCode;
+                    if (waitingMaxTime > 0 && item.qrCode != null) {
+                        statusCode = StatusCode.STATUS_OK;
+                    } else {
+                        statusCode = StatusCode.ERROR_CAPTURE_TIMEOUT;
+                    }
+                    MyOrders.endHandleOrderItem(item, statusCode);
+                }
+                Tools.doClick(root.getChild(0));
+                Tools.sleep(1000);
+                //开关关掉,等待处理下一个
+                AccessibilityCPService.isRunning = false;
+            }
+        }.start();
     }
 
 
 //    private final static class HelpItem implements Comparable<HelpItem> {
-//        public String orderId;
+//        public String orderNum;
 //
 //
 //        private String week;//日,一,二,三,四,五,六
 //        private String num;
 //
-//        public HelpItem(String orderId) {
-//            this.orderId = orderId;
-//            week = orderId.substring(1, 2);
-//            num = orderId.substring(2);
+//        public HelpItem(String orderNum) {
+//            this.orderNum = orderNum;
+//            week = orderNum.substring(1, 2);
+//            num = orderNum.substring(2);
 //        }
 //
 //        @Override
 //        public int compareTo(@NonNull HelpItem o) {
 //            //竞彩编号相同
-//            if (o.orderId.equals(this.orderId))
+//            if (o.orderNum.equals(this.orderNum))
 //                return 0;
 //
 //            //周次相同,是比较数字编号

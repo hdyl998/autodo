@@ -19,6 +19,7 @@ import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -28,11 +29,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.autodo.AccessibilityCPService;
 import com.autodo.App;
 import com.autodo.R;
-import com.autodo.Tools;
+import com.autodo.utils.Tools;
+import com.autodo.lottery.MyOrders;
 import com.autodo.qrcode.ErweimaUtils;
 import com.autodo.tools.LogUtils;
 import com.autodo.utils.CalcTime;
@@ -49,8 +51,9 @@ public class CaptureScreenService extends Service {
     private WindowManager mWindowManager = null;
     private LayoutInflater inflater = null;
     private View mFloatView = null;
+    private TextView mStopResume = null;
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "CaptureScreenService";
 //
 //    private SimpleDateFormat dateFormat = null;
 //    private String strDate = null;
@@ -74,9 +77,21 @@ public class CaptureScreenService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        LogUtils.d(TAG, "onCreate");
         createFloatView();
         createVirtualEnvironment();
+
+        PowerManager powerManager = null;
+        powerManager = (PowerManager) this.getSystemService(this.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
+        wakeLock.acquire();
     }
+
+    PowerManager.WakeLock wakeLock = null;
+
+
+    public static boolean isPause = false;
 
 
     private void createFloatView() {
@@ -94,7 +109,7 @@ public class CaptureScreenService extends Service {
         mFloatLayout = (LinearLayout) inflater.inflate(R.layout.float_layout, null);
         mWindowManager.addView(mFloatLayout, wmParams);
         mFloatView = mFloatLayout.findViewById(R.id.button);
-
+        mStopResume = mFloatLayout.findViewById(R.id.btnStopResume);
         mFloatLayout.measure(View.MeasureSpec.makeMeasureSpec(0,
                 View.MeasureSpec.UNSPECIFIED), View.MeasureSpec
                 .makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
@@ -110,21 +125,22 @@ public class CaptureScreenService extends Service {
             }
         });
 
+
+        mStopResume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPause = !isPause;
+                mStopResume.setText(isPause ? "继续" : "暂停");
+            }
+        });
+        mStopResume.setText(isPause ? "继续" : "暂停");
+
         mFloatView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // hide the button
-                mFloatView.setVisibility(View.INVISIBLE);
-
-                Handler handler1 = new Handler();
-                handler1.postDelayed(new Runnable() {
-                    public void run() {
-                        //start virtual
-                        startVirtual();
-                    }
-                }, 500);
-
+                mFloatLayout.setVisibility(View.INVISIBLE);
+                startVirtual();
                 Handler handler2 = new Handler();
                 handler2.postDelayed(new Runnable() {
                     public void run() {
@@ -132,13 +148,6 @@ public class CaptureScreenService extends Service {
                         startCapture();
                     }
                 }, 1500);
-//                Handler handler3 = new Handler();
-//                handler3.postDelayed(new Runnable() {
-//                    public void run() {
-//                        mFloatView.setVisibility(View.VISIBLE);
-//                        //stopVirtual();
-//                    }
-//                }, 1000);
             }
         });
 
@@ -197,19 +206,18 @@ public class CaptureScreenService extends Service {
      */
     private Bitmap handleBitmap(Bitmap bitmapSource) {
         Rect rect = pictureRect;
+        if (rect == null) {
+            return bitmapSource;
+        }
         Bitmap bitmapQrcode = Bitmap.createBitmap(rect.width(), rect.height(), bitmapSource.getConfig());
         Canvas canvas = new Canvas(bitmapQrcode);
         canvas.drawBitmap(bitmapSource, rect, new RectF(0, 0, rect.width(), rect.height()), null);
-        Tools.saveBitmapAsFile(App.getApp(), bitmapQrcode);
         return bitmapQrcode;
-//        return bitmapSource;
     }
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void startCapture() {
-//        strDate = dateFormat.format(new java.util.Date());
-//        nameImage = pathImage + strDate + ".png";
         Image image = mImageReader.acquireLatestImage();
         int width = image.getWidth();
         int height = image.getHeight();
@@ -226,38 +234,22 @@ public class CaptureScreenService extends Service {
         if (bitmap != null) {
             bitmap = handleBitmap(bitmap);
             CalcTime calcTime = new CalcTime();
+
+            //识别两次,如果都失败那就没法了
             String data = ErweimaUtils.parseQRcodeBitmap(bitmap);
+            //识别失败(在二维码场景,识别两次,且做记录保存),非二维码场景pictureRect==null
+            if (data == null && pictureRect != null) {
+                Tools.saveBitmapAsFile(getApplicationContext(), bitmap);
+                data = ErweimaUtils.parseQRcodeBitmap(bitmap);
+            }
             calcTime.printResult("识别耗时");
             Tools.showToast(data);
-            LogUtils.d(TAG, "code" + data);
-            mFloatView.setVisibility(View.VISIBLE);
+            LogUtils.d(TAG, "code=" + data);
+            mFloatLayout.setVisibility(View.VISIBLE);
             //二维码
-            AccessibilityCPService.getFirstGroupItem().setQrCode(data);
-
-//            try {
-//                File fileImage = new File(nameImage);
-//                if (!fileImage.exists()) {
-//                    fileImage.createNewFile();
-//                    Log.i(TAG, "image file created");
-//                }
-//                FileOutputStream out = new FileOutputStream(fileImage);
-//                if (out != null) {
-//                    bitmap.compress(Bitmap.CompressFormat.PNG, 50, out);
-//                    out.flush();
-//                    out.close();
-//                    Intent media = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-//                    Uri contentUri = Uri.fromFile(fileImage);
-//                    media.setData(contentUri);
-//                    this.sendBroadcast(media);
-//                    Log.i(TAG, "screen image saved");
-//                    Tools.showToast("screen image saved");
-//                    mFloatView.setVisibility(View.VISIBLE);
-//                }
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            if (MyOrders.getFirstOrderItem() != null)
+                MyOrders.getFirstOrderItem().setQrCode(data);
+            isOK = true;
         }
     }
 
@@ -289,6 +281,8 @@ public class CaptureScreenService extends Service {
         tearDownMediaProjection();
         Log.i(TAG, "application destroy");
         stopVirtual();
+
+        wakeLock.release();
     }
 
     @Nullable
@@ -299,27 +293,32 @@ public class CaptureScreenService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String data = intent.getStringExtra(ACTION_KEY);
-        if (data != null && mFloatView != null) {
-            switch (data) {
-                case ACTION_VALUE:
-                    mFloatView.performClick();
+        LogUtils.d(TAG, "onStartCommand" + (intent == null));
+        if (intent != null && intent.getAction() != null) {
+            switch (intent.getAction()) {
+                case ACTION_CATCH_PICTURE:
+                    if (mFloatView != null)
+                        mFloatView.performClick();
                     break;
             }
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public final static String ACTION_KEY = "action_key";
-    public final static String ACTION_VALUE = "action_do";
+    public final static String ACTION_CATCH_PICTURE = "action_key";
 
 
     public static void doCapture(Context mContext, Rect rect) {
+        isOK = false;
         pictureRect = rect;
         Intent intent = new Intent(mContext, CaptureScreenService.class);
-        intent.putExtra(ACTION_KEY, ACTION_VALUE);
+        intent.setAction(ACTION_CATCH_PICTURE);
         mContext.startService(intent);
+
+        LogUtils.d(TAG, "doCapture");
     }
 
     private static Rect pictureRect;
+
+    public static boolean isOK = false;
 }
