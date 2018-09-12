@@ -161,17 +161,9 @@ public class LogicHolder {
 
 
     public void ensureHunheguoguan() {
-
-
-        int totalTime = 0;
         //确保在混合过关内
         while (!isInHunheguoguan()) {
             Tools.sleep(1000);
-
-            totalTime += 1000;
-            if (totalTime >= ConstDatas.PAGE_TIME_OUT) {
-                throw new TimeOutException("ensureHunheguoguan");
-            }
         }
 //        AccessibilityNodeInfo nodeInfo = Tools.findFirstByText(service.getRootInActiveWindow(), "混合过关");
 //        if (nodeInfo != null) {
@@ -456,10 +448,10 @@ public class LogicHolder {
         picNode.getBoundsInScreen(rect);
 
         //放大部分像素,用于截屏
-        rect.left -= 5;
-        rect.right += 5;
-        rect.top -= 5;
-        rect.bottom += 5;
+        rect.left -= 10;
+        rect.right += 10;
+        rect.top -= 10;
+        rect.bottom += 10;
         //执行截屏
         CaptureScreenService.doCapture(App.getApp(), rect);
         //等待截图完成
@@ -488,7 +480,6 @@ public class LogicHolder {
                 Tools.doClick(root.getChild(0));
                 Tools.sleep(1000);
                 //开关关掉,等待处理下一个
-                AccessibilityCPService.isRunning = false;
             }
         }.start();
     }

@@ -144,6 +144,14 @@ public class OrderItem {
             int index = str.indexOf("#");
             if (index != -1) {
                 selections[count] = str.substring(0, index);
+            } else {//单关
+                index = str.indexOf("@");
+                if (index != -1) {
+                    selections[count] = str.substring(0, index);
+                } else {
+                    selections[count] = str;
+                }
+
             }
             count++;
         }

@@ -1,5 +1,6 @@
 package com.autodo.lottery;
 
+import com.autodo.AccessibilityCPService;
 import com.autodo.MySocket;
 import com.autodo.tools.LogUtils;
 
@@ -68,6 +69,7 @@ public class MyOrders {
             handledOrderIds.clear();
         }
         LogUtils.d("处理结果", orderItem.toString());
+        AccessibilityCPService.isRunning = false;
     }
 
 }

@@ -232,16 +232,9 @@ public class CaptureScreenService extends Service {
         image.close();
         Log.i(TAG, "image data captured");
         if (bitmap != null) {
-            bitmap = handleBitmap(bitmap);
+//            bitmap = handleBitmap(bitmapSource);
             CalcTime calcTime = new CalcTime();
-
-            //识别两次,如果都失败那就没法了
             String data = ErweimaUtils.parseQRcodeBitmap(bitmap);
-            //识别失败(在二维码场景,识别两次,且做记录保存),非二维码场景pictureRect==null
-            if (data == null && pictureRect != null) {
-                Tools.saveBitmapAsFile(getApplicationContext(), bitmap);
-                data = ErweimaUtils.parseQRcodeBitmap(bitmap);
-            }
             calcTime.printResult("识别耗时");
             Tools.showToast(data);
             LogUtils.d(TAG, "code=" + data);
