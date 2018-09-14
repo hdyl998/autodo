@@ -17,6 +17,12 @@ import java.text.SimpleDateFormat;
 public class ExampleUnitTest {
     @Test
     public void useAppContext() throws Exception {
+
+        String url = "alipays://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2Fa6x05728z5wdnm1lsuzzj0d";
+        if (!url.startsWith("http") && !url.contains("://")) {
+            url = "http://" + url;
+        }
+        System.out.println(url);
         ///
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("中国人民yyyy_MM_dd_hh_mm_ss");
 //        String strDate = dateFormat.format(new java.util.Date());

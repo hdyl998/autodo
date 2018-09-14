@@ -17,13 +17,17 @@ import java.util.List;
 public class SystemUtils {
 
 
+    public static boolean isServiceRunning(Context context, Class<?> clazz) {
+        return isServiceRunning(context, clazz.getName());
+    }
+
     /**
      * 判断服务是否开启
      *
      * @return
      */
     public static boolean isServiceRunning(Context context, String ServiceName) {
-        if (("").equals(ServiceName) || ServiceName == null)
+        if ("".equals(ServiceName) || ServiceName == null)
             return false;
         ActivityManager myManager = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);

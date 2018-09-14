@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkCapturServiceEnable() {
-        if (SystemUtils.isServiceRunning(mContext, CaptureScreenService.class.getName())) {
+        if (SystemUtils.isServiceRunning(mContext, CaptureScreenService.class)) {
             tvCaptureService.setText("截图服务已打开");
             tvStopCapture.setVisibility(View.VISIBLE);
             tvStartCapture.setVisibility(View.VISIBLE);
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Tools.showToast("没有悬浮窗权限,请在设置中打开悬浮窗权限");
             return;
         }
-        if (!SystemUtils.isServiceRunning(mContext, CaptureScreenService.class.getName())) {
+        if (!SystemUtils.isServiceRunning(mContext, CaptureScreenService.class)) {
             if (Build.VERSION_CODES.LOLLIPOP <= Build.VERSION.SDK_INT) {
                 Tools.showToast("正在启动截屏服务");
                 startActivity(new Intent(mContext, CaptureMainActivity.class));

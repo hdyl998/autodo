@@ -6,7 +6,7 @@
     android:canRetrieveWindowContent="true"
     android:description="@string/description"
     android:notificationTimeout="100"
-    android:packageNames="com.tencent.mm,cn.gov.lottery,com.caiyu.qqsd,com.android.systemui,com.czdx.ddcp" />
+    android:packageNames="cn.gov.lottery" />
 
 
     <!--android:accessibilityFlags="flagDefault"-->

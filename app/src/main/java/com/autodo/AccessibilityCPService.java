@@ -79,7 +79,7 @@ public class AccessibilityCPService extends AccessibilityService {
                                 int count = 0;
                                 while (!holder.isInHunheguoguan()) {
                                     performGlobalAction(GLOBAL_ACTION_BACK);
-                                    Tools.sleep(3000);
+                                    Tools.sleep(2000);
                                     count++;
                                     if (count == 3) {
                                         break;
