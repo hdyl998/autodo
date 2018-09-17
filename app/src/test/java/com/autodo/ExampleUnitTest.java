@@ -8,6 +8,8 @@ import com.autodo.socket.MapCreator;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -18,11 +20,31 @@ public class ExampleUnitTest {
     @Test
     public void useAppContext() throws Exception {
 
-        String url = "alipays://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2Fa6x05728z5wdnm1lsuzzj0d";
-        if (!url.startsWith("http") && !url.contains("://")) {
-            url = "http://" + url;
+        List<Integer> lists = new ArrayList<>();
+
+        int count = 50;
+
+        {
+            lists.add(10);
+            lists.add(20);
         }
-        System.out.println(url);
+//    public HashMap<Integer, String> hashMap = new HashMap<>();
+        {
+
+            for (Integer integer : lists) {
+                for (int i = 0; i < count; i++) {
+//                hashMap.put((integer * 100 - i), null);
+                    System.out.println(String.format("%.2f", (integer * 100 - i) / 100f));
+                }
+            }
+
+        }
+
+//        String url = "alipays://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2Fa6x05728z5wdnm1lsuzzj0d";
+//        if (!url.startsWith("http") && !url.contains("://")) {
+//            url = "http://" + url;
+//        }
+//        System.out.println(url);
         ///
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("中国人民yyyy_MM_dd_hh_mm_ss");
 //        String strDate = dateFormat.format(new java.util.Date());

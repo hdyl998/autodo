@@ -206,9 +206,9 @@ public class Tools {
      * @param mContext
      * @param bitmap
      */
-    public static void saveBitmapAsFile(Context mContext, Bitmap bitmap) {
+    public static void saveBitmapAsFile(Context mContext, Bitmap bitmap, String tag) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("截图第一次失败yyyy_MM_dd_hh_mm_ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(String.format("截图识别失败%s_yyyy_MM_dd_hh_mm_ss", tag));
             String strDate = dateFormat.format(new java.util.Date());
             String pathImage = Environment.getExternalStorageDirectory().getPath() + "/Pictures/";
             String nameImage = pathImage + strDate + ".png";

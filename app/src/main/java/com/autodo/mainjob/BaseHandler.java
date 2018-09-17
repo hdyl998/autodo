@@ -19,9 +19,14 @@ public abstract class BaseHandler {
 
     public BaseHandler(AccessibilityService service) {
         this.service = service;
-        root = service.getRootInActiveWindow();
+        resetRoot();
         isResultOK = handle();
     }
+
+    public void resetRoot() {
+        root = service.getRootInActiveWindow();
+    }
+
 
     public boolean isResultOK() {
         return isResultOK;

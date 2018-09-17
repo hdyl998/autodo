@@ -82,8 +82,7 @@ public class CaptureScreenService extends Service {
         createFloatView();
         createVirtualEnvironment();
 
-        PowerManager powerManager = null;
-        powerManager = (PowerManager) this.getSystemService(this.POWER_SERVICE);
+        PowerManager powerManager = (PowerManager) this.getSystemService(this.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
         wakeLock.acquire();
     }
@@ -242,6 +241,10 @@ public class CaptureScreenService extends Service {
             //二维码
             if (MyOrders.getFirstOrderItem() != null)
                 MyOrders.getFirstOrderItem().setQrCode(data);
+            if (data == null) {
+                Tools.saveBitmapAsFile(getApplicationContext(), bitmap, stringTag);
+            }
+            QRCodeString = data;
             isOK = true;
         }
     }
@@ -307,11 +310,33 @@ public class CaptureScreenService extends Service {
         Intent intent = new Intent(mContext, CaptureScreenService.class);
         intent.setAction(ACTION_CATCH_PICTURE);
         mContext.startService(intent);
+        LogUtils.d(TAG, "doCapture");
+    }
 
+    public static void doCapture(Context mContext, String stringTag) {
+        isOK = false;
+        stringTag = stringTag;
+        Intent intent = new Intent(mContext, CaptureScreenService.class);
+        intent.setAction(ACTION_CATCH_PICTURE);
+        mContext.startService(intent);
         LogUtils.d(TAG, "doCapture");
     }
 
     private static Rect pictureRect;
 
     public static boolean isOK = false;
+
+    public static String QRCodeString;//二维码字符串
+
+
+    public static String getQRCodeString() {
+        return QRCodeString;
+    }
+
+    public static String stringTag;//用于设置为什么出现问题,好截图看到情况说明
+
+
+    public static void setStringTag(String stringTag) {
+        CaptureScreenService.stringTag = stringTag;
+    }
 }
