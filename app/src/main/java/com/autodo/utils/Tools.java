@@ -208,8 +208,8 @@ public class Tools {
      */
     public static void saveBitmapAsFile(Context mContext, Bitmap bitmap, String tag) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(String.format("截图识别失败%s_yyyy_MM_dd_hh_mm_ss", tag));
-            String strDate = dateFormat.format(new java.util.Date());
+            SimpleDateFormat dateFormat = new SimpleDateFormat(String.format("yyyy_MM_dd_hh_mm_ss"));
+            String strDate = "截图识别失败_" + tag + dateFormat.format(new java.util.Date());
             String pathImage = Environment.getExternalStorageDirectory().getPath() + "/Pictures/";
             String nameImage = pathImage + strDate + ".png";
             File fileImage = new File(nameImage);

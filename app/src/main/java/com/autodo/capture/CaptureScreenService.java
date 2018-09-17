@@ -313,9 +313,9 @@ public class CaptureScreenService extends Service {
         LogUtils.d(TAG, "doCapture");
     }
 
-    public static void doCapture(Context mContext, String stringTag) {
+    public static void doCapture(Context mContext, String tag) {
         isOK = false;
-        stringTag = stringTag;
+        stringTag = tag;
         Intent intent = new Intent(mContext, CaptureScreenService.class);
         intent.setAction(ACTION_CATCH_PICTURE);
         mContext.startService(intent);
@@ -333,7 +333,7 @@ public class CaptureScreenService extends Service {
         return QRCodeString;
     }
 
-    public static String stringTag;//用于设置为什么出现问题,好截图看到情况说明
+    public static String stringTag = "";//用于设置为什么出现问题,好截图看到情况说明
 
 
     public static void setStringTag(String stringTag) {
