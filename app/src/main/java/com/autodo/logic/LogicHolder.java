@@ -453,7 +453,7 @@ public class LogicHolder {
         rect.top -= 10;
         rect.bottom += 10;
         //执行截屏
-        CaptureScreenService.doCapture(App.getApp(), rect);
+        CaptureScreenService.doCapture(App.getApp());
         //等待截图完成
         new Thread() {
             int waitingMaxTime = 10000;

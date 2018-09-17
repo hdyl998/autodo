@@ -60,7 +60,7 @@ public class QrcHandler extends BaseHandler {
         rect.top -= 5;
         rect.bottom += 5;
         //执行截屏
-        CaptureScreenService.doCapture(App.getApp(), rect);
+        CaptureScreenService.doCapture(App.getApp());
         //等待截图完成
         new Thread() {
             int weatingMaxTime = 10000;

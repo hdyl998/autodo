@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startCaptureService();
                 break;
             case R.id.startCapture:
-                CaptureScreenService.doCapture(mContext, null);
+                CaptureScreenService.doCapture(mContext);
                 break;
             case R.id.stopCapture:
                 stopService(new Intent(mContext, CaptureScreenService.class));

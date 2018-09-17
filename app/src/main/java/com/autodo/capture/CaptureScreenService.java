@@ -304,9 +304,9 @@ public class CaptureScreenService extends Service {
     public final static String ACTION_CATCH_PICTURE = "action_key";
 
 
-    public static void doCapture(Context mContext, Rect rect) {
+    public static void doCapture(Context mContext) {
         isOK = false;
-        pictureRect = rect;
+//        pictureRect = rect;
         Intent intent = new Intent(mContext, CaptureScreenService.class);
         intent.setAction(ACTION_CATCH_PICTURE);
         mContext.startService(intent);
@@ -319,7 +319,7 @@ public class CaptureScreenService extends Service {
         Intent intent = new Intent(mContext, CaptureScreenService.class);
         intent.setAction(ACTION_CATCH_PICTURE);
         mContext.startService(intent);
-        LogUtils.d(TAG, "doCapture");
+        LogUtils.d(TAG, "doCapture tag" + tag);
     }
 
     private static Rect pictureRect;
