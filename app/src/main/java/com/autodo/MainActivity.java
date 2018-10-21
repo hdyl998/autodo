@@ -20,8 +20,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.autodo.adapter.BaseViewHolder;
 import com.autodo.adapter.SuperAdapter;
+import com.autodo.alipaycapture.DataSaveUtils;
 import com.autodo.capture.CaptureMainActivity;
 import com.autodo.capture.CaptureScreenService;
+import com.autodo.jiakaocapture.QuestionItem;
 import com.autodo.lottery.OrderItem;
 import com.autodo.lottery.LotteryJSONBean;
 import com.autodo.lottery.MyOrders;
@@ -29,13 +31,16 @@ import com.autodo.qrcode.ErweimaUtils;
 import com.autodo.socket.SocketMessageListener;
 import com.autodo.tools.AppOpsUtils;
 import com.autodo.tools.LogUtils;
+import com.autodo.utils.SuSystemUtils;
 import com.autodo.utils.SystemUtils;
 import com.autodo.utils.Tools;
 import com.autodo.utils.bufferknife.MyBindView;
 import com.autodo.utils.bufferknife.MyBufferKnifeUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -67,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView tvSocketStatus;
 
     MySocket mySocket = MySocket.getInstance();
+
+
+
 
     @Override
     protected void onDestroy() {
@@ -140,6 +148,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.clear).setOnClickListener(this);
 
+        findViewById(R.id.superUser).setOnClickListener(this);
+
         listView.setAdapter(adapter = new SuperAdapter<String>(mContext, listStrings, R.layout.fragment1) {
             @Override
             protected void onBind(BaseViewHolder holder, String item, int position) {
@@ -175,6 +185,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.clear:
                 adapter.clear();
+                break;
+            case R.id.superUser:
+                SuSystemUtils.execShellCmd("input keyevent 3");//home
                 break;
 
 

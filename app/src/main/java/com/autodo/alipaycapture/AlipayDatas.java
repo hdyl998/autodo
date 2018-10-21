@@ -32,11 +32,11 @@ public class AlipayDatas {
 
     private static final String TAG = "AlipayDatas";
     public int mCurrent = 0;
-
+    final String fileName = "zhifubao";
     public List<PayInfoItem> listAllFinished = new ArrayList<>();
 
     {
-        String saveData = DataSaveUtils.readData();
+        String saveData = DataSaveUtils.readData(fileName);
 
         List<PayInfoItem> listHaveDo = null;
         if (saveData != null) {
@@ -103,7 +103,7 @@ public class AlipayDatas {
     public void saveNewData() {
         listAllFinished.add(getCurrentItem());
         Collections.sort(listAllFinished);
-        DataSaveUtils.saveData(JSON.toJSONString(listAllFinished));
+        DataSaveUtils.saveData(JSON.toJSONString(listAllFinished), fileName);
     }
 
 

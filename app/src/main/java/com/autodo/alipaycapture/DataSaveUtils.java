@@ -20,8 +20,8 @@ import java.util.HashMap;
  */
 
 public class DataSaveUtils {
-    public static String readData() {
-        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/download/zhifubaomoney.txt");
+    public static String readData(String fileName) {
+        File file = new File(Environment.getExternalStorageDirectory().getPath() + String.format("/download/%s.txt",fileName));
         if (!file.exists()) {
             Log.d("tttt", "配置文件不存在");
             return null;
@@ -50,8 +50,8 @@ public class DataSaveUtils {
         return null;
     }
 
-    public static void saveData(String string) {
-        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/download/zhifubaomoney.txt");
+    public static void saveData(String string,String fileName) {
+        File file = new File(Environment.getExternalStorageDirectory().getPath() +  String.format("/download/%s.txt",fileName));
         if (!file.exists()) {
             Log.d("tttt", "配置文件不存在");
             file.getParentFile().mkdirs();

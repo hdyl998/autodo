@@ -75,6 +75,23 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_zhifubao" />
         </service>
+
+
+        <service
+            android:name=".jiakaocapture.JiaokaoAccessibilityService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="驾考测试程序"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_jiakao" />
+        </service>
+
     </application>
 
 </manifest>

@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FragmentAdd.iml" filepath="$PROJECT_DIR$/FragmentAdd.iml" />
+      <module fileurl="file://D:\mygit\autodo\FragmentAdd.iml" filepath="D:\mygit\autodo\FragmentAdd.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/autodo.iml" filepath="$PROJECT_DIR$/.idea/autodo.iml" />
     </modules>
   </component>
 </project>

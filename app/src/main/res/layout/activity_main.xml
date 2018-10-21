@@ -45,6 +45,11 @@
             android:layout_height="wrap_content"
             android:text="清屏" />
 
+        <Button
+            android:id="@+id/superUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SuperUser" />
     </com.autodo.view.FlowLayout>
 
 

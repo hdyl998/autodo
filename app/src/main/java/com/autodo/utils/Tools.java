@@ -70,7 +70,9 @@ public class Tools {
             LogUtils.d("findFirstById", "查找为空id " + string);
             return null;
         }
-        LogUtils.d("findFirstById", "查找成功id " + string);
+        LogUtils.d("findFirstById", "查找成功id " + string+lists.size());
+
+
         return lists.get(0);
 
     }
