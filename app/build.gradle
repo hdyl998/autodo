@@ -24,7 +24,7 @@ android {
             debuggable true
         }
     }
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '26.0.2'
     dexOptions {
         incremental true
     }
@@ -35,8 +35,6 @@ android {
 }
 
 dependencies {
-    implementation 'io.reactivex:rxandroid:1.1.0'
-    implementation 'io.reactivex:rxjava:1.1.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
@@ -48,5 +46,5 @@ dependencies {
     /*二维码识别*/
     implementation 'com.github.yuzhiqiang1993:zxing:2.1.8'
 
-    compile 'com.vise.xiaoyaoyou:xsnow:2.1.8'
+    implementation 'com.vise.xiaoyaoyou:xsnow:2.1.8'
 }

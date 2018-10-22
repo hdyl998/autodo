@@ -4,8 +4,10 @@ import android.accessibilityservice.AccessibilityService;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.autodo.alipaycapture.SetTextHandler;
+import com.autodo.chongding.ChongdingDataHandlder;
 import com.autodo.tools.LogUtils;
-import com.autodo.utils.Tools;
+
+import java.util.HashSet;
 
 /**
  * <p>Created by Administrator on 2018/9/14.<p>
@@ -23,17 +25,11 @@ public class JiaokaoAccessibilityService extends AccessibilityService {
     }
 
     SetTextHandler handler;
+    HashSet<String> hashSet = new HashSet<>();
+
 
     private void handEvent(String event) {
-        switch (event) {
-            case "com.handsgo.jiakao.android.practice_refactor.activity.PracticeActivity":
-
-                Tools.sleep(2000);
-                new CollectAllDataHandlder(this);
-                break;
-            case "0":
-                break;
-        }
+        new ChongdingDataHandlder(this,hashSet).handle();
 
     }
 
